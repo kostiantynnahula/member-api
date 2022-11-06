@@ -32,6 +32,17 @@
 $ npm install
 ```
 
+### Docker
+
+```bash
+docker-compose up
+```
+
+### OpenSearch Admin
+(http://localhost:5601/) - link to admin
+
+Default credentials `admin | admin`
+
 ## Running the app
 
 ```bash
