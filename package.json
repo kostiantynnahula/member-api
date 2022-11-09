@@ -27,6 +27,8 @@
     "@nestjs/graphql": "^10.1.5",
     "@nestjs/platform-express": "^9.0.0",
     "apollo-server-express": "^3.11.1",
+    "fb": "^2.0.0",
+    "google-auth-library": "^8.6.0",
     "graphql": "^16.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
