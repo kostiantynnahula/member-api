@@ -7,13 +7,7 @@ jobs:
     outputs: 
       repo: ${{ steps.repo.outputs.repo }}
       ref: ${{ steps.repo.outputs.repo }}
-      # output1: ${{steps.step1.outputs.firstword}}
-      # output2: ${{steps.step2.outputs.secondword}}
     steps: 
-      # - id: step1
-      #   run: echo "firstword=hello" >> $GITHUB_OUTPUT
-      # - id: step2
-      #   run: echo "secondword=world" >> $GITHUB_OUTPUT
       - name: get repository
         run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
         id: repo
