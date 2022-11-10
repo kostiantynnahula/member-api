@@ -5,21 +5,27 @@ jobs:
   prepare: 
     runs-on: ubuntu-latest
     outputs: 
-      - repo: ${{ steps.repo.outputs.repo }}
-      - ref: ${{ steps.repo.outputs.ref }}
+      # - repo: ${{ steps..outputs.repo }}
+      # - ref: ${{ steps.repo.outputs.ref }}
+      output1: ${{steps.step1.outputs.firstword}}
+      output1: ${{steps.step2.outputs.secondword}}
     steps: 
-      - name: get repository
-        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
-        id: rep
-      - name: get ref
-        run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
-        id: ref
+      - id: step1
+        run: echo "firstword=hello" >> $GITHUB_OUTPUT
+      - id: step2
+        run: echo "secondword=world" >> $GITHUB_OUTPUT
+      # - name: get repository
+      #   run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
+      #   id: rep
+      # - name: get ref
+      #   run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
+      #   id: ref
 
   Explore-GitHub-Actions:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{steps.prepare.outputs.ref}} | ${{steps.prepare.outputs.repo}}"
+      # - run: echo "${{steps.prepare.outputs.ref}} | ${{steps.prepare.outputs.repo}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
