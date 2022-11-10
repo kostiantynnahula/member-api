@@ -6,20 +6,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       repo: ${{ steps.repo.outputs.repo }}
-      ref: ${{ steps.repo.outputs.repo }}
+      branch: ${{ steps.repo.outputs.branch }}
     steps: 
       - name: get repository
-        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
+        run: echo "repo=${{GITHUB_REPOSITORY}}" >> $GITHUB_OUTPUT
         id: repo
-      - name: get ref
-        run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
-        id: ref
+      - name: get branch
+        run: echo "branch=branch" >> $GITHUB_OUTPUT
+        id: branch
 
   Explore-GitHub-Actions:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.ref}}"
+      - run: echo "${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.branch}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
