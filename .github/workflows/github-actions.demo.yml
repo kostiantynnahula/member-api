@@ -5,13 +5,13 @@ jobs:
   prepare: 
     runs-on: ubuntu-latest
     outputs: 
-      output1: ${{steps.step1.outputs.firstword}}
-      output2: ${{steps.step2.outputs.secondword}}
+      output1: ${{steps.step1.outputs.repo}}
+      output2: ${{steps.step2.outputs.branch}}
     steps: 
       - id: step1
-        run: echo "firstword=${{ github.repository }}" >> $GITHUB_OUTPUT
+        run: echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
       - id: step2
-        run: echo "secondword=${{ github.ref }}" >> $GITHUB_OUTPUT
+        run: echo "branch=${{ github.ref }}" >> $GITHUB_OUTPUT
 
   Explore-GitHub-Actions:
     needs: [prepare]
