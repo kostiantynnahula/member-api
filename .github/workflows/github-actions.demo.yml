@@ -20,7 +20,8 @@ jobs:
           echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
         id: repo
       - name: get ref
-        run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
+        run: 
+          echo "ref=test" >> $GITHUB_OUTPUT
         id: ref
 
   Explore-GitHub-Actions:
