@@ -9,10 +9,10 @@ jobs:
       branch: ${{ steps.repo.outputs.branch }}
     steps: 
       - name: get repository
-        run: echo "repo=${{GITHUB_REPOSITORY}}" >> $GITHUB_OUTPUT
+        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
         id: repo
       - name: get branch
-        run: echo "branch=branch" >> $GITHUB_OUTPUT
+        run: echo "branch=test" >> $GITHUB_OUTPUT
         id: branch
 
   Explore-GitHub-Actions:
