@@ -15,7 +15,7 @@ jobs:
       - name: Nodejs version
         run: |
           node -v 
-      - run: echo "${{ steps }}"
+      - run: echo "${{ steps.repo.outputs.repo }} is repo value"
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
