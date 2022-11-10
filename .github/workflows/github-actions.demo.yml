@@ -9,7 +9,7 @@ jobs:
       branch: ${{steps.step2.outputs.branch}}
     steps: 
       - id: step1
-        run: echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+        run: echo "repo=${{ github.repository }}#fortum/" >> $GITHUB_OUTPUT
       - id: step2
         run: echo "branch=${{ github.ref }}" >> $GITHUB_OUTPUT
 
