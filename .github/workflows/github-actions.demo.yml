@@ -4,17 +4,22 @@ on: [push]
 jobs:
   prepare: 
     runs-on: ubuntu-latest
+    output: 
+      - repo: ${{ steps.repo.outputs.repo }}
+      - ref: ${{ steps.repo.outputs.ref }}
     steps: 
       - name: get repository
-        run: echo "${{github.repository}}"
+        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
         id: rep
       - name: get ref
-        run: echo "${{github.ref}}"
+        run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
         id: ref
 
   Explore-GitHub-Actions:
+    needs: [prepare]
     runs-on: ubuntu-latest
     steps:
+      - run: echo "${{steps.prepare.output.ref}} | ${{steps.prepare.output.repo}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
