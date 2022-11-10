@@ -5,16 +5,11 @@ jobs:
   prepare: 
     runs-on: ubuntu-latest
     outputs: 
-      repo: ${{ steps.repo.outputs.repo }}
-      output2: ${{ steps.repo.outputs.secondword }}
-      branch: ${{ steps.repo.outputs.branch }}
+      output1: ${{steps.step1.outputs.firstword}}
+      output2: ${{steps.step2.outputs.secondword}}
     steps: 
-      - name: get repository
-        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
-        id: repo
-      - name: get branch
-        run: echo "branch=test" >> $GITHUB_OUTPUT
-        id: branch
+      - id: step1
+        run: echo "firstword=hello" >> $GITHUB_OUTPUT
       - id: step2
         run: echo "secondword=world" >> $GITHUB_OUTPUT
 
@@ -22,7 +17,7 @@ jobs:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.output2}}"
+      - run: echo "${{needs.prepare.outputs.output1}} | ${{needs.prepare.outputs.output2}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
