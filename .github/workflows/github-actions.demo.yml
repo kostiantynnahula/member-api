@@ -8,7 +8,7 @@ jobs:
       # - repo: ${{ steps..outputs.repo }}
       # - ref: ${{ steps.repo.outputs.ref }}
       output1: ${{steps.step1.outputs.firstword}}
-      output1: ${{steps.step2.outputs.secondword}}
+      output2: ${{steps.step2.outputs.secondword}}
     steps: 
       - id: step1
         run: echo "firstword=hello" >> $GITHUB_OUTPUT
