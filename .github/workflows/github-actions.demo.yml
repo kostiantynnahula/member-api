@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       repo: ${{ steps.repo.outputs.repo }}
-      ref: ${{ steps.repo.outputs.ref }}
+      ref: ${{ steps.repo.outputs.repo }}
     steps: 
       - name: get repository
         run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
