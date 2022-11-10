@@ -5,8 +5,8 @@ jobs:
   prepare: 
     runs-on: ubuntu-latest
     outputs: 
-      output1: ${{steps.step1.outputs.repo}}
-      output2: ${{steps.step2.outputs.branch}}
+      repo: ${{steps.step1.outputs.repo}}
+      branch: ${{steps.step2.outputs.branch}}
     steps: 
       - id: step1
         run: echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
@@ -17,7 +17,7 @@ jobs:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{needs.prepare.outputs.output1}} | ${{needs.prepare.outputs.output2}}"
+      - run: echo "${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.branch}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
