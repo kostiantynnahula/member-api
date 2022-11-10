@@ -5,7 +5,7 @@ jobs:
   prepare: 
     runs-on: ubuntu-latest
     outputs: 
-      repo: ${{ steps..outputs.repo }}
+      repo: ${{ steps.repo.outputs.repo }}
       ref: ${{ steps.repo.outputs.ref }}
       output1: ${{steps.step1.outputs.firstword}}
       output2: ${{steps.step2.outputs.secondword}}
