@@ -10,10 +10,10 @@ jobs:
     steps: 
       - name: extract repo name
         id: repo
-        run: echo "repo=${{ github.repository }}#fortum/" >> $GITHUB_OUTPUT
+        run: echo "repo=$(echo ${GITHUB_REPOSITORY#fortum/})" >> $GITHUB_OUTPUT
       - name: extract branch name 
         id: branch
-        run: echo "branch=${{ github.ref }}##*/" >> $GITHUB_OUTPUT
+        run: echo "branch=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
 
   Explore-GitHub-Actions:
     needs: [prepare]
