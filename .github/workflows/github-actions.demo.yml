@@ -6,45 +6,33 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       repo: ${{ steps.repo.outputs.repo }}
-      ref: ${{ steps.repo.outputs.ref }}
-      output1: ${{steps.step1.outputs.firstword}}
-      output2: ${{steps.step2.outputs.secondword}}
+      ref: ${{ steps.repo.outputs.repo }}
+      # output1: ${{steps.step1.outputs.firstword}}
+      # output2: ${{steps.step2.outputs.secondword}}
     steps: 
-      - id: step1
-        run: echo "firstword=hello" >> $GITHUB_OUTPUT
-      - id: step2
-        run: 
-          echo "secondword=world" >> $GITHUB_OUTPUT
+      # - id: step1
+      #   run: echo "firstword=hello" >> $GITHUB_OUTPUT
+      # - id: step2
+      #   run: echo "secondword=world" >> $GITHUB_OUTPUT
       - name: get repository
-        run: 
-          echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
+        run: echo "repo=${{github.repository}}" >> $GITHUB_OUTPUT
         id: repo
       - name: get ref
-        run: 
-          echo "ref=test" >> $GITHUB_OUTPUT
+        run: echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
         id: ref
 
   Explore-GitHub-Actions:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      # - if: ${{needs.prepare.outputs.}}
-      - run: echo "${{needs.prepare.outputs.output1}} | ${{needs.prepare.outputs.output2}} || ${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.ref}}"
+      - run: echo "${{needs.prepare.outputs.repo}} | ${{needs.prepare.outputs.ref}}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: Nodejs version
-        run: |
-          node -v 
       - run: echo "${{ steps.repo.outputs.repo }} is repo value"
       - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
