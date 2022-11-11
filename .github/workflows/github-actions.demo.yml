@@ -33,6 +33,9 @@ jobs:
           node-version: '16.x'
       - name: check node node-version
         run: node -v
+      - uses: actions/cache@v3
+      - run: ls -la
+        
   Deploy: 
     needs: [prepare, Explore-GitHub-Actions]
     if: ${{needs.prepare.outputs.branch == 'github-actions'}}
