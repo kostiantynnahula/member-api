@@ -34,7 +34,13 @@ jobs:
       - name: check node node-version
         run: node -v
       - uses: actions/cache@v3
-      - run: ls -la
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
         
   Deploy: 
     needs: [prepare, Explore-GitHub-Actions]
