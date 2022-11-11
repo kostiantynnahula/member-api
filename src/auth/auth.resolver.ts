@@ -1,11 +1,16 @@
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
-import { User } from './models/user.model';
+import { User } from './../users/models/user.model';
 import { ProfileInput } from './inputs/profile.input';
 import { GoogleInput } from './inputs/google.input';
 import { FacebookInput } from './inputs/facebook.input';
+import { UsersService } from './../users/users.service';
 
 @Resolver(of => User)
 export class AuthResolver {
+
+  constructor(
+    private userService: UsersService
+  ) {}
 
   @Query(returns => User)
   async profile() {

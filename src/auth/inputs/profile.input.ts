@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, Min, Max } from 'class-validator';
+import { IsEmail, MinLength, MaxLength } from 'class-validator';
 
 @InputType()
 export class ProfileInput {
   @Field()
-  @Min(3)
-  @Max(45)
+  @MinLength(3)
+  @MaxLength(45)
   username: string;
 
   @Field()
   @IsEmail()
-  @Max(45)
+  @MaxLength(45)
   email: string;
 }
