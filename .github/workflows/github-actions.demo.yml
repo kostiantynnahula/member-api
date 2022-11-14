@@ -19,12 +19,12 @@ jobs:
     needs: [prepare]
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: install node
+      - name: Install node
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - name: install
+        run: yarn
       - name: check node node-version
         run: node -v
 
