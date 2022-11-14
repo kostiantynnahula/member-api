@@ -33,7 +33,7 @@ jobs:
           JF_URL: ${{ secrets.ARTIFACTORY_URL }}
           JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
           JF_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-        run: |
+      - run: |
           jf rt ping
       # - name: configure jfrog cli
       #   run: jfrog rt config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
