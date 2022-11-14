@@ -31,7 +31,7 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v3
       - run: jf config --help
       - name: configure jfrog cli
-        run: jfrog config add --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
+        run: jfrog config add --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD2 }}
       # - name: Retrieve node_modules' cache
       #   id: node-modules-cache
       #   uses: actions/cache@v3
