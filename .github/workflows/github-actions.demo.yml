@@ -27,16 +27,8 @@ jobs:
         run: echo "${{ secrets.ARTIFACTORY_USERNAME }}"
       - name: artifactory url
         run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
-      - uses: jfrog/setup-jfrog-cli@v3
-        env:
-          # JFrog platform url (for example: https://acme.jfrog.io) 
-          JF_URL: ${{ secrets.JF_URL }}
-          
-          # Basic authentication credentials
-          JF_USER: ${{ secrets.JF_USER }}
-          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-      - run: |
-          jf rt ping
+      - name: install jfrog cli
+        uses: jfrog/setup-jfrog-cli@v3
       - name: configure jfrog cli
         run: jfrog rt config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
       # - name: Retrieve node_modules' cache
