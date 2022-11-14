@@ -28,7 +28,7 @@ jobs:
       - name: artifactory url
         run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
       - name: install jfrog cli
-        uses: jfrog/setup-jfrog-cli@v2
+        uses: jfrog/setup-jfrog-cli@v3
       - run: jf config --help
       - name: configure jfrog cli
         run: jfrog config add --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
