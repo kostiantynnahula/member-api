@@ -29,7 +29,7 @@ jobs:
         run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
       - name: install jfrog cli
         uses: jfrog/setup-jfrog-cli@v3
-      - run: jf --help
+      - run: jf config --help
       - name: configure jfrog cli
         run: jfrog config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
       # - name: Retrieve node_modules' cache
