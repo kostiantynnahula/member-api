@@ -27,10 +27,12 @@ jobs:
         run: echo "${{ secrets.ARTIFACTORY_USERNAME }}"
       - name: artifactory url
         run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
-      - name: install jfrog cli
-        uses: jfrog/setup-jfrog-cli@v3
-        env: 
+      - uses: jfrog/setup-jfrog-cli@v3
+        env:
+          # JFrog platform url (for example: https://acme.jfrog.io) 
           JF_URL: ${{ secrets.JF_URL }}
+          
+          # Basic authentication credentials
           JF_USER: ${{ secrets.JF_USER }}
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
       - run: |
