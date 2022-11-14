@@ -27,22 +27,30 @@ jobs:
         run: echo "${{ secrets.ARTIFACTORY_USERNAME }}"
       - name: artifactory url
         run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
-      - name: Retrieve node_modules' cache
-        id: node-modules-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Install node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: install
-        run: yarn
-      - name: check node node-version
-        run: node -v
+      - name: install jfrog cli
+        uses: jfrog/setup-jfrog-cli@v3
+        env: 
+          JF_URL: ${{ secrets.ARTIFACTORY_URL }}
+          JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
+          JF_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      # - name: configure jfrog cli
+      #   run: jfrog rt config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
+      # - name: Retrieve node_modules' cache
+      #   id: node-modules-cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       node_modules
+      #       */*/node_modules
+      #     key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      # - name: Install node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16.x'
+      # - name: install
+      #   run: yarn
+      # - name: check node node-version
+      #   run: node -v
 
         
   Deploy: 
