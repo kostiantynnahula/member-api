@@ -30,13 +30,13 @@ jobs:
       - name: install jfrog cli
         uses: jfrog/setup-jfrog-cli@v3
         env: 
-          JF_URL: ${{ secrets.ARTIFACTORY_URL }}
-          JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
-          JF_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
       - run: |
           jf rt ping
-      # - name: configure jfrog cli
-      #   run: jfrog rt config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
+      - name: configure jfrog cli
+        run: jfrog rt config --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD }}
       # - name: Retrieve node_modules' cache
       #   id: node-modules-cache
       #   uses: actions/cache@v3
