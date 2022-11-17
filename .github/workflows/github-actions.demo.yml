@@ -58,9 +58,9 @@ jobs:
       #   run: node -v
 
         
-  # Deploy: 
-  #   needs: [prepare, Explore-GitHub-Actions]
-  #   if: ${{needs.prepare.outputs.branch == 'github-actions'}}
-  #   runs-on: ubuntu-latest
-  #   steps: 
-  #     - run: echo "test deploy"
+  Deploy: 
+    needs: [prepare, Explore-GitHub-Actions]
+    if: ${{needs.prepare.outputs.branch == 'github-actions'}}
+    runs-on: ubuntu-latest
+    steps: 
+      - run: echo "test deploy"
