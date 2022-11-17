@@ -21,17 +21,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: artifactory url
-        run: echo "${{ secrets.ARTIFACTORY_URL }}"
-      - name: artifactory url
-        run: echo "${{ secrets.ARTIFACTORY_USERNAME }}"
-      - name: artifactory url
-        run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
-      - name: install jfrog cli
-        uses: jfrog/setup-jfrog-cli@v3
-      - run: jf config --help
-      - name: configure jfrog cli
-        run: jfrog config add --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD2 }} --enc-password=false --basic-auth-only
+      - name: echo output repo
+        run: echo "${{needs.prepare.outputs.repo}} repo"
+      - name: echo output branch
+        run: echo "${{needs.prepare.outputs.branch}} branch"
+      # - name: artifactory url
+      #   run: echo "${{ secrets.ARTIFACTORY_URL }}"
+      # - name: artifactory url
+      #   run: echo "${{ secrets.ARTIFACTORY_USERNAME }}"
+      # - name: artifactory url
+      #   run: echo "${{ secrets.ARTIFACTORY_PASSWORD }}"
+      # - name: install jfrog cli
+      #   uses: jfrog/setup-jfrog-cli@v3
+      # - run: jf config --help
+      # - name: configure jfrog cli
+      #   run: jfrog config add --url=${{ secrets.ARTIFACTORY_URL }} --user=${{ secrets.ARTIFACTORY_USERNAME }} --password=${{ secrets.ARTIFACTORY_PASSWORD2 }} --enc-password=false --basic-auth-only
       # - name: Retrieve node_modules' cache
       #   id: node-modules-cache
       #   uses: actions/cache@v3
@@ -50,9 +54,9 @@ jobs:
       #   run: node -v
 
         
-  Deploy: 
-    needs: [prepare, Explore-GitHub-Actions]
-    if: ${{needs.prepare.outputs.branch == 'github-actions'}}
-    runs-on: ubuntu-latest
-    steps: 
-      - run: echo "test deploy"
+  # Deploy: 
+  #   needs: [prepare, Explore-GitHub-Actions]
+  #   if: ${{needs.prepare.outputs.branch == 'github-actions'}}
+  #   runs-on: ubuntu-latest
+  #   steps: 
+  #     - run: echo "test deploy"
