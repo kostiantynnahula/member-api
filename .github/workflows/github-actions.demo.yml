@@ -13,7 +13,7 @@ jobs:
         run: echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
       - name: extract branch name 
         id: branch
-        run: echo "branch=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
+        run: echo "branch=test_branch" >> $GITHUB_OUTPUT
 
   Explore-GitHub-Actions:
     needs: [prepare]
