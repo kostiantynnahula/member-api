@@ -13,7 +13,7 @@ jobs:
         run: echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
       - name: extract branch name 
         id: branch
-        run: echo "branch=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
+        run: echo "branch=${{github.ref_name}}" >> $GITHUB_OUTPUT
 
   Explore-GitHub-Actions:
     needs: [prepare]
@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@v3
       - name: echo output repo
         run: echo "${{needs.prepare.outputs.repo}} repo"
+      - name: echo output branch name: 
+        run: echo "${{needs.prepare.outputs.branch}} branch"
       - name: echo output branch
         run: echo "${{github.ref}} branch"
       - name: echo output github ref name
