@@ -24,7 +24,7 @@ jobs:
       - name: echo output repo
         run: echo "${{needs.prepare.outputs.repo}} repo"
       - name: echo output branch
-        run: echo "${{GITHUB_REF}} branch"
+        run: echo "${{github.ref}} branch"
       # - name: artifactory url
       #   run: echo "${{ secrets.ARTIFACTORY_URL }}"
       # - name: artifactory url
