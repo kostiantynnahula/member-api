@@ -8,7 +8,7 @@ export class FacebookInput {
   @IsDefined()
   @IsNotEmpty()
   accessToken: string;
-  
+
   @Field()
   @IsString()
   @IsDefined()

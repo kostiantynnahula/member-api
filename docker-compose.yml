@@ -9,6 +9,7 @@ version: '3.6'
 services:
   members-mongodb-auth:
     image: mongo:4.2.3-bionic
+    restart: always
     container_name: members-mongodb-auth
     ports:
       - 27017:27017

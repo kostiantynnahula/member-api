@@ -9,20 +9,26 @@ export type UserDocument = HydratedDocument<User>;
 })
 export class User {
   @Prop()
-  id?: string;
-  
+  _id?: string;
+
   @Prop({
     required: true,
     unique: true,
-    maxlength: 45
+    maxlength: 45,
   })
   email: string;
-  
+
   @Prop({
     required: true,
-    maxlength: 45
+    maxlength: 45,
   })
   username: string;
+
+  @Prop({
+    required: false,
+    maxlength: 255,
+  })
+  facebookId?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
