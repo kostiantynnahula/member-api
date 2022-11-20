@@ -8,9 +8,9 @@ import { UsersService } from './users.service';
     MongooseModule.forFeature([
       {
         name: User.name,
-        schema: UserSchema
-      }
-    ])
+        schema: UserSchema,
+      },
+    ]),
   ],
   providers: [UsersService],
   exports: [UsersService],

@@ -1,16 +1,20 @@
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { User } from './../users/models/user.model';
 import { ProfileInput } from './inputs/profile.input';
 import { GoogleInput } from './inputs/google.input';
 import { FacebookInput } from './inputs/facebook.input';
 import { UsersService } from './../users/users.service';
 import { SocialService } from './social.service';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Resolver((of) => User)
 export class AuthResolver {
   constructor(
     private userService: UsersService,
     private socialService: SocialService,
+    private authService: AuthService,
   ) {}
 
   @Query((returns) => User)
@@ -22,12 +26,13 @@ export class AuthResolver {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation((returns) => User)
   async updateProfile(@Args('profileInput') body: ProfileInput) {
     const { username, email } = body;
 
     return {
-      id: 'user_id',
+      _id: 'user_id',
       username: username || 'user_name',
       email: email || 'user_email',
     };
@@ -39,6 +44,8 @@ export class AuthResolver {
 
     const existedItem = await this.userService.findByFacebookId(details.id);
 
+    console.log(existedItem);
+
     if (!existedItem) {
       const result = await this.userService.create({
         email: details.email,
@@ -46,10 +53,14 @@ export class AuthResolver {
         facebookId: details.id,
       });
 
-      return result;
+      const token = await this.authService.generateToken(existedItem);
+
+      return { ...result, token } as User;
     }
 
-    return existedItem;
+    const token = await this.authService.generateToken(existedItem);
+
+    return { ...existedItem, token } as User;
   }
 
   // @Mutation((returns) => User)

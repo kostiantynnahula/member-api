@@ -17,6 +17,6 @@ export class UsersService {
   }
 
   async findByFacebookId(id: string): Promise<User> {
-    return await this.userModel.findOne({ facebookId: id }).exec();
+    return await this.userModel.findOne({ facebookId: id }, null, { lean: true }).exec();
   }
 }
