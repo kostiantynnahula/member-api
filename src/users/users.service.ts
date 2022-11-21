@@ -17,6 +17,16 @@ export class UsersService {
   }
 
   async findByFacebookId(id: string): Promise<User> {
-    return await this.userModel.findOne({ facebookId: id }, null, { lean: true }).exec();
+    return await this.userModel
+      .findOne({ facebookId: id }, null, { lean: true })
+      .exec();
+  }
+
+  async findById(_id: string) {
+    return await this.userModel.findOne({ id: _id }).exec();
+  }
+
+  async updateOne(_id: string, data: Partial<User>) {
+    return await this.userModel.findOneAndUpdate({ id: _id }, { ...data });
   }
 }

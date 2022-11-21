@@ -1,5 +1,5 @@
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, Req, NotFoundException } from '@nestjs/common';
 import { User } from './../users/models/user.model';
 import { ProfileInput } from './inputs/profile.input';
 import { GoogleInput } from './inputs/google.input';
@@ -8,6 +8,7 @@ import { UsersService } from './../users/users.service';
 import { SocialService } from './social.service';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Auth } from './auth.decorator';
 
 @Resolver((of) => User)
 export class AuthResolver {
@@ -17,25 +18,29 @@ export class AuthResolver {
     private authService: AuthService,
   ) {}
 
-  @Query((returns) => User)
-  async profile() {
-    return {
-      id: 'user_id',
-      username: 'user_name',
-      email: 'user_email',
-    };
+  @Query(returns => User)
+  @UseGuards(JwtAuthGuard)
+  async profile(@Auth() auth: User) {
+    return auth;
   }
 
   @UseGuards(JwtAuthGuard)
   @Mutation((returns) => User)
-  async updateProfile(@Args('profileInput') body: ProfileInput) {
+  async updateProfile(
+    @Auth() auth: User,
+    @Args('profileInput') body: ProfileInput,
+  ) {
     const { username, email } = body;
 
-    return {
-      _id: 'user_id',
-      username: username || 'user_name',
-      email: email || 'user_email',
-    };
+    const user = await this.userService.findById(auth._id);
+
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+
+    await this.userService.updateOne(auth._id, { email, username });
+
+    return user;
   }
 
   @Mutation((returns) => User)
