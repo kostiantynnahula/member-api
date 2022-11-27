@@ -7,9 +7,19 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: 'ITEM_MICROSERVICE',
+        transport: Transport.TCP,
+        options: {
+          port: 3001,
+        },
+      },
+    ]),
     ConfigModule.forRoot(),
     MongooseModule.forRoot(`${process.env.MONGO_CONNECTION_PATH}`, {
       autoIndex: false,

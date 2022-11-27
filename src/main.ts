@@ -14,12 +14,12 @@ async function bootstrap() {
       validationError: {
         target: true,
         value: true,
-      }
-    })
+      },
+    }),
   );
 
   useContainer(app.select(AppModule), {
-    fallbackOnErrors: true
+    fallbackOnErrors: true,
   });
 
   await app.listen(3000);
