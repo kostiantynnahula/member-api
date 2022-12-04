@@ -5,11 +5,13 @@ import { OrganizationsService } from './organizations.service';
 
 @Resolver((of) => Organization)
 export class OrganizationsResolver {
+  organizationId = '638cd7d8e2d89d6399ea118f';
+
   constructor(private readonly service: OrganizationsService) {}
 
   @Query(() => Organization)
   async organization() {
-    return this.service.getOrganization('431386a9-f42d-41a2-abda-7193e900ba0a');
+    return this.service.getOrganization(this.organizationId);
   }
 
   @Mutation(() => Organization, {
@@ -17,5 +19,15 @@ export class OrganizationsResolver {
   })
   async register(@Args('organizationInput') body: OrganizationInput) {
     return this.service.createOrganization(body);
+  }
+
+  @Mutation(() => Organization, {
+    name: 'updateOrganization',
+  })
+  async update(@Args('updateOrganizationInput') body: OrganizationInput) {
+    return this.service.updateOrganization({
+      _id: this.organizationId,
+      ...body,
+    });
   }
 }

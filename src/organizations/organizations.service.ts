@@ -27,4 +27,14 @@ export class OrganizationsService {
       data,
     );
   }
+
+  updateOrganization(data: OrganizationInput & { _id: string }) {
+    return this.client.send(
+      {
+        entity: 'organization',
+        cmd: 'update',
+      },
+      data,
+    );
+  }
 }
