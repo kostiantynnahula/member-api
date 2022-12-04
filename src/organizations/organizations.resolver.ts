@@ -1,24 +1,21 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Organization } from './models/organization.model';
 import { OrganizationInput } from './inputs/organization.input';
+import { OrganizationsService } from './organizations.service';
 
 @Resolver((of) => Organization)
 export class OrganizationsResolver {
-  private mockData = {
-    _id: 1,
-    name: 'organization name',
-    description: 'description',
-  };
+  constructor(private readonly service: OrganizationsService) {}
 
-  @Query(returns => Organization)
+  @Query(() => Organization)
   async organization() {
-    return this.mockData;
+    return this.service.getOrganization('431386a9-f42d-41a2-abda-7193e900ba0a');
   }
 
-  @Mutation((returns) => Organization, {
+  @Mutation(() => Organization, {
     name: 'registerOrganization',
   })
   async register(@Args('organizationInput') body: OrganizationInput) {
-    return this.mockData;
+    return this.service.createOrganization(body);
   }
 }
