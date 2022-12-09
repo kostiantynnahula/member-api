@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { OrganizationsResolver } from './organizations.resolver';
 import { OrganizationsService } from './organizations.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { UsersModule } from './../users/users.module';
 @Module({
   imports: [
     ClientsModule.register([
@@ -13,6 +14,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    UsersModule,
   ],
   providers: [OrganizationsResolver, OrganizationsService],
   exports: [OrganizationsService],
