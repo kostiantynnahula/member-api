@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { InvitesModule } from './invites/invites.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
     AuthModule,
     UsersModule,
     OrganizationsModule,
+    InvitesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,9 +1,12 @@
-import { BadRequestException, NotFoundException, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Organization } from './models/organization.model';
 import { OrganizationInput } from './inputs/organization.input';
 import { OrganizationsService } from './organizations.service';
-import { UsersService } from './../users/users.service';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
@@ -11,12 +14,7 @@ import { lastValueFrom } from 'rxjs';
 @UseGuards(JwtAuthGuard)
 @Resolver((of) => Organization)
 export class OrganizationsResolver {
-  public organizationId = '638cd7d8e2d89d6399ea118f';
-
-  constructor(
-    private readonly service: OrganizationsService,
-    private readonly userService: UsersService,
-  ) {}
+  constructor(private readonly service: OrganizationsService) {}
 
   @Query(() => Organization)
   async organization(@Auth() auth: User) {
@@ -52,9 +50,20 @@ export class OrganizationsResolver {
   @Mutation(() => Organization, {
     name: 'updateOrganization',
   })
-  async update(@Args('updateOrganizationInput') body: OrganizationInput) {
+  async update(
+    @Args('updateOrganizationInput') body: OrganizationInput,
+    @Auth() auth: User,
+  ) {
+    const organization = await lastValueFrom(
+      this.service.getOrganizationByCreator(auth._id),
+    );
+
+    if (!organization) {
+      return new NotFoundException();
+    }
+
     return this.service.updateOrganization({
-      _id: this.organizationId,
+      _id: organization._id,
       ...body,
     });
   }
