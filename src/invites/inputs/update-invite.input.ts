@@ -7,5 +7,5 @@ export class UpdateInviteInput {
   @Field()
   @IsDefined()
   @IsNotEmpty()
-  email: InviteStatus;
+  status: InviteStatus;
 }

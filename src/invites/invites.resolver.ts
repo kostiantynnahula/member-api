@@ -19,12 +19,12 @@ export class InvitesResolver {
 
   @Query(() => Invite)
   async getInvite(@Args('id') _id: string) {
-    // get invite
+    return await this.service.getInvite(_id);
   }
 
   @Query(() => [Invite])
   async getInvites(@Auth() auth: User) {
-    // get invites
+    return await this.service.getInvites(auth._id);
   }
 
   @Mutation(() => Invite)
@@ -32,7 +32,7 @@ export class InvitesResolver {
     @Args('createInviteInput') body: CreateInviteInput,
     @Auth() auth: User,
   ) {
-    // create invite
+    return await this.service.createInvite(body);
   }
 
   @Mutation(() => Invite)
@@ -40,6 +40,6 @@ export class InvitesResolver {
     @Args('updateInviteInput') body: UpdateInviteInput,
     @Auth() auth: User,
   ) {
-    // update invite
+    return await this.service.updateInvite(body);
   }
 }
