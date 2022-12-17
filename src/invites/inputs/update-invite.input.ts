@@ -6,6 +6,10 @@ import { InviteStatus } from './../../utils/models/invites';
 export class UpdateInviteInput {
   @Field()
   @IsDefined()
+  _id: string;
+
+  @Field()
+  @IsDefined()
   @IsNotEmpty()
   status: InviteStatus;
 }

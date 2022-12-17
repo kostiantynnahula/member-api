@@ -49,8 +49,6 @@ export class AuthResolver {
 
     const existedItem = await this.userService.findByFacebookId(details.id);
 
-    console.log(existedItem);
-
     if (!existedItem) {
       const result = await this.userService.create({
         email: details.email,

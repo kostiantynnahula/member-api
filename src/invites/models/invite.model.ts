@@ -8,10 +8,10 @@ export class Invite {
   _id: string;
 
   @Field()
-  from: User;
+  from: string;
 
   @Field()
-  to: User;
+  to: string;
 
   @Field()
   type: InviteType;

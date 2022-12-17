@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import {
+  NotFoundException,
   UseGuards,
   // BadRequestException,
   // NotFoundException,
@@ -11,11 +12,18 @@ import { Auth } from 'src/auth/auth.decorator';
 import { CreateInviteInput } from './inputs/create-invite.input';
 import { UpdateInviteInput } from './inputs/update-invite.input';
 import { User } from './../users/models/user.model';
+import { OrganizationsService } from './../organizations/organizations.service';
+import { lastValueFrom } from 'rxjs';
+import { InviteType } from './../utils/models/invites';
+import { CreateInvitePayload } from './../utils/inputs/invites';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
 export class InvitesResolver {
-  constructor(private readonly service: InvitesService) {}
+  constructor(
+    private readonly service: InvitesService,
+    private readonly organizationsService: OrganizationsService,
+  ) {}
 
   @Query(() => Invite)
   async getInvite(@Args('id') _id: string) {
@@ -24,7 +32,7 @@ export class InvitesResolver {
 
   @Query(() => [Invite])
   async getInvites(@Auth() auth: User) {
-    return await this.service.getInvites(auth._id);
+    return await this.service.getInvites(auth.email);
   }
 
   @Mutation(() => Invite)
@@ -32,7 +40,18 @@ export class InvitesResolver {
     @Args('createInviteInput') body: CreateInviteInput,
     @Auth() auth: User,
   ) {
-    return await this.service.createInvite(body);
+    const organization = await lastValueFrom(
+      this.organizationsService.getOrganizationByCreator(auth._id),
+    );
+
+    const payload: CreateInvitePayload = {
+      from: auth.email,
+      to: body.email,
+      organization: organization._id,
+      type: InviteType.ORGANIZATION,
+    };
+
+    return await this.service.createInvite(payload);
   }
 
   @Mutation(() => Invite)
@@ -40,6 +59,14 @@ export class InvitesResolver {
     @Args('updateInviteInput') body: UpdateInviteInput,
     @Auth() auth: User,
   ) {
+    const invite = await lastValueFrom(
+      this.service.getInviteByEmail({ _id: body._id, email: auth.email }),
+    );
+
+    if (!invite) {
+      return new NotFoundException('Invite was not found');
+    }
+
     return await this.service.updateInvite(body);
   }
 }

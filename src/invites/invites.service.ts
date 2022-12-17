@@ -1,11 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateInviteInput } from './inputs/create-invite.input';
 import { UpdateInviteInput } from './inputs/update-invite.input';
+import { CreateInvitePayload } from './../utils/inputs/invites';
+import { GetInviteByEmail } from './inputs/get-invite-by-email.input';
 
 @Injectable()
 export class InvitesService {
-  constructor(@Inject('ORGANIZARTION_MICROSERVICE') private readonly client: ClientProxy) {}
+  constructor(
+    @Inject('ORGANIZARTION_MICROSERVICE') private readonly client: ClientProxy,
+  ) {}
 
   getInvite(_id: string) {
     return this.client.send(
@@ -17,17 +20,17 @@ export class InvitesService {
     );
   }
 
-  getInvites(user_id: string) {
+  getInvites(email: string) {
     return this.client.send(
       {
         entity: 'invite',
-        cmd: 'get-many',
+        cmd: 'get-related-invites',
       },
-      user_id,
+      email,
     );
   }
 
-  createInvite(data: CreateInviteInput) {
+  createInvite(data: CreateInvitePayload) {
     return this.client.send(
       {
         entity: 'invite',
@@ -42,6 +45,16 @@ export class InvitesService {
       {
         entity: 'invite',
         cmd: 'update-one',
+      },
+      data,
+    );
+  }
+
+  getInviteByEmail(data: GetInviteByEmail) {
+    return this.client.send(
+      {
+        entity: 'invite',
+        cmd: 'get-by-email',
       },
       data,
     );

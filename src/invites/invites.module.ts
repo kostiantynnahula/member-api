@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { InvitesService } from './invites.service';
 import { InvitesResolver } from './invites.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { OrganizationsModule } from './../organizations/organizations.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    OrganizationsModule,
   ],
   providers: [InvitesService, InvitesResolver],
 })

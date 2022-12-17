@@ -11,6 +11,7 @@ import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
 import { lastValueFrom } from 'rxjs';
+
 @UseGuards(JwtAuthGuard)
 @Resolver((of) => Organization)
 export class OrganizationsResolver {
@@ -44,7 +45,11 @@ export class OrganizationsResolver {
       return new BadRequestException('You already have an organization');
     }
 
-    return this.service.createOrganization({ ...body, creator_id: auth._id });
+    const organization = await lastValueFrom(
+      this.service.createOrganization({ ...body, creator_id: auth._id }),
+    );
+
+    return organization;
   }
 
   @Mutation(() => Organization, {

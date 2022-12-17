@@ -9,7 +9,7 @@ export class OrganizationsService {
   ) {}
 
   getOrganization(_id) {
-    return this.client.send(
+    return this.client.send<Organization>(
       {
         entity: 'organization',
         cmd: 'get-one',
@@ -29,7 +29,7 @@ export class OrganizationsService {
   }
 
   createOrganization(data: OrganizationInput & { creator_id: string }) {
-    return this.client.send(
+    return this.client.send<Organization>(
       {
         entity: 'organization',
         cmd: 'create',
@@ -39,7 +39,7 @@ export class OrganizationsService {
   }
 
   updateOrganization(data: OrganizationInput & { _id: string }) {
-    return this.client.send(
+    return this.client.send<Organization>(
       {
         entity: 'organization',
         cmd: 'update',
