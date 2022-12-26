@@ -11,7 +11,7 @@ import { OrganizationsModule } from './../organizations/organizations.module';
         name: process.env.ORGANIZARTION_MICROSERVICE_NAME || 'ORGANIZARTION_MICROSERVICE',
         transport: Transport.TCP,
         options: {
-          port: Number(process.env.ORGANIZARTION_MICROSERVICE_NAME) || 3001,
+          port: Number(process.env.ORGANIZARTION_MICROSERVICE_PORT) || 3001,
         },
       },
     ]),

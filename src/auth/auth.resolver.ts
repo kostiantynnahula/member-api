@@ -18,7 +18,7 @@ export class AuthResolver {
     private authService: AuthService,
   ) {}
 
-  @Query(returns => User)
+  @Query((returns) => User)
   @UseGuards(JwtAuthGuard)
   async profile(@Auth() auth: User) {
     return auth;
