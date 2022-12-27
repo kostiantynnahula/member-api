@@ -9,6 +9,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { InvitesModule } from './invites/invites.module';
+import { FilesModule } from './files/files.module';
+import { FoldersModule } from './folders/folders.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { InvitesModule } from './invites/invites.module';
     UsersModule,
     OrganizationsModule,
     InvitesModule,
+    FilesModule,
+    FoldersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
