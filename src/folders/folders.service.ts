@@ -12,7 +12,9 @@ export class FoldersService {
     @Inject('FILE_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 
-  getMany(params: GetManyFolderInput): Observable<Folder[]> {
+  getMany(
+    params: GetManyFolderInput & { user_id: string },
+  ): Observable<Folder[]> {
     return this.client.send(
       {
         entity: 'folder',
@@ -22,17 +24,17 @@ export class FoldersService {
     );
   }
 
-  getOne(_id): Observable<Folder> {
+  getOne(params: { _id: string; user_id: string }): Observable<Folder> {
     return this.client.send(
       {
         entity: 'folder',
         cmd: 'get-one',
       },
-      _id,
+      params,
     );
   }
 
-  createOne(data: CreateFolderInput): Observable<Folder> {
+  createOne(data: CreateFolderInput & { user_id: string }): Observable<Folder> {
     return this.client.send(
       {
         entity: 'folder',
@@ -42,7 +44,7 @@ export class FoldersService {
     );
   }
 
-  updateOne(data: UpdateFolderInput): Observable<Folder> {
+  updateOne(data: UpdateFolderInput & { user_id: string }): Observable<Folder> {
     return this.client.send(
       {
         entity: 'folder',
@@ -52,13 +54,13 @@ export class FoldersService {
     );
   }
 
-  deleteOne(_id: string): Observable<void> {
+  deleteOne(params: { _id: string; user_id: string }): Observable<void> {
     return this.client.send(
       {
         entity: 'folder',
         cmd: 'delete-one',
       },
-      _id,
+      params,
     );
   }
 }

@@ -12,7 +12,9 @@ export class FilesService {
     @Inject('FILE_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 
-  async getMany(params: GetManyFileInput): Promise<File[]> {
+  async getMany(
+    params: GetManyFileInput & { user_id: string },
+  ): Promise<File[]> {
     const list = this.client.send<File[]>(
       {
         entity: 'files',
@@ -24,19 +26,19 @@ export class FilesService {
     return await lastValueFrom(list);
   }
 
-  async getOne(_id: string): Promise<File> {
+  async getOne(params: { _id: string; user_id: string }): Promise<File> {
     const item = this.client.send<File>(
       {
         entity: 'files',
         cmd: 'get-one',
       },
-      _id,
+      params,
     );
 
     return await lastValueFrom(item);
   }
 
-  async createOne(data: CreateFileInput): Promise<File> {
+  async createOne(data: CreateFileInput & { user_id: string }): Promise<File> {
     const result = this.client.send<File>(
       {
         entity: 'files',
@@ -48,7 +50,7 @@ export class FilesService {
     return await lastValueFrom(result);
   }
 
-  async updateOne(data: UpdateFileInput): Promise<File> {
+  async updateOne(data: UpdateFileInput & { user_id: string }): Promise<File> {
     const result = this.client.send<File>(
       {
         entity: 'files',
@@ -60,13 +62,13 @@ export class FilesService {
     return await lastValueFrom(result);
   }
 
-  async deleteOne(_id: string): Promise<void> {
+  async deleteOne(params: { _id: string; user_id: string }): Promise<void> {
     const result = this.client.send<any>(
       {
         entity: 'files',
         cmd: 'delete-one',
       },
-      _id,
+      params,
     );
 
     await lastValueFrom(result);

@@ -1,5 +1,5 @@
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
-import { UseGuards, Req, NotFoundException } from '@nestjs/common';
+import { UseGuards, NotFoundException } from '@nestjs/common';
 import { User } from './../users/models/user.model';
 import { ProfileInput } from './inputs/profile.input';
 import { GoogleInput } from './inputs/google.input';
