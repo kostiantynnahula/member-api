@@ -1,14 +1,11 @@
-import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { UserDocument, User } from './users.schema';
+import { User } from './users.schema';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
     @Inject('USER_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 

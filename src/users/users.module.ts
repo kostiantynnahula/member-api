@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema, User } from './users.schema';
 import { UsersService } from './users.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
@@ -13,12 +11,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           port: Number(process.env.USER_MICROSERVICE_PORT) || 3003,
         },
-      },
-    ]),
-    MongooseModule.forFeature([
-      {
-        name: User.name,
-        schema: UserSchema,
       },
     ]),
   ],

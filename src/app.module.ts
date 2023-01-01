@@ -11,6 +11,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { InvitesModule } from './invites/invites.module';
 import { FilesModule } from './files/files.module';
 import { FoldersModule } from './folders/folders.module';
+import { MailsModule } from './mails/mails.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { FoldersModule } from './folders/folders.module';
     InvitesModule,
     FilesModule,
     FoldersModule,
+    MailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

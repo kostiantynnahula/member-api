@@ -18,14 +18,14 @@ export class AuthResolver {
     private authService: AuthService,
   ) {}
 
-  @Query((returns) => User)
+  @Query(() => User)
   @UseGuards(JwtAuthGuard)
   async profile(@Auth() auth: User) {
     return auth;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async updateProfile(
     @Auth() auth: User,
     @Args('profileInput') body: ProfileInput,
@@ -43,12 +43,10 @@ export class AuthResolver {
     return user;
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async signInFacebook(@Args('facebookInput') body: FacebookInput) {
     const details = await this.socialService.getFacebookDetails(body);
-
     const existedItem = await this.userService.findByFacebookId(details.id);
-
     if (!existedItem) {
       const result = await this.userService.create({
         email: details.email,

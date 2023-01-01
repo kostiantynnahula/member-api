@@ -15,7 +15,9 @@ import { User } from './../users/models/user.model';
 export class FoldersResolver {
   constructor(private readonly service: FoldersService) {}
 
-  @Query(() => Folder)
+  @Query(() => Folder, {
+    name: 'getFolder',
+  })
   async getOne(@Args('id') _id: string, @Auth() user: User) {
     const folder = await lastValueFrom(
       this.service.getOne({
@@ -31,7 +33,9 @@ export class FoldersResolver {
     return folder;
   }
 
-  @Query(() => [Folder])
+  @Query(() => [Folder], {
+    name: 'getFolderList',
+  })
   async getMany(
     @Args('params') params: GetManyFolderInput,
     @Auth() user: User,
@@ -45,7 +49,9 @@ export class FoldersResolver {
     return folders;
   }
 
-  @Mutation(() => Folder)
+  @Mutation(() => Folder, {
+    name: 'createFolder',
+  })
   async createOne(
     @Args('createFolderInput') body: CreateFolderInput,
     @Auth() user: User,
@@ -59,7 +65,9 @@ export class FoldersResolver {
     return folder;
   }
 
-  @Mutation(() => Folder)
+  @Mutation(() => Folder, {
+    name: 'updateFolder',
+  })
   async updateOne(
     @Args('updateFolderInput') body: UpdateFolderInput,
     @Auth() user: User,
@@ -86,7 +94,9 @@ export class FoldersResolver {
     return result;
   }
 
-  @Mutation(() => Folder)
+  @Mutation(() => Folder, {
+    name: 'deleteFolder',
+  })
   async deleteOne(@Args('id') _id: string, @Auth() user: User) {
     return await lastValueFrom(
       this.service.deleteOne({

@@ -16,6 +16,7 @@ import { OrganizationsService } from './../organizations/organizations.service';
 import { lastValueFrom } from 'rxjs';
 import { InviteType } from './../utils/models/invites';
 import { CreateInvitePayload } from './../utils/inputs/invites';
+import { MailsService } from './../mails/mails.service';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -23,6 +24,7 @@ export class InvitesResolver {
   constructor(
     private readonly service: InvitesService,
     private readonly organizationsService: OrganizationsService,
+    private readonly mailService: MailsService,
   ) {}
 
   @Query(() => Invite)
@@ -51,7 +53,16 @@ export class InvitesResolver {
       type: InviteType.ORGANIZATION,
     };
 
-    return await this.service.createInvite(payload);
+    const invite = await this.service.createInvite(payload);
+
+    await this.mailService.sendInvite({
+      from: auth.email,
+      to: body.email,
+      subject: 'Invite email',
+      body: 'Invite email body',
+    });
+
+    return invite;
   }
 
   @Mutation(() => Invite)

@@ -13,7 +13,7 @@ import { User } from './../users/models/user.model';
 import { lastValueFrom } from 'rxjs';
 
 @UseGuards(JwtAuthGuard)
-@Resolver((of) => Organization)
+@Resolver(() => Organization)
 export class OrganizationsResolver {
   constructor(private readonly service: OrganizationsService) {}
 
