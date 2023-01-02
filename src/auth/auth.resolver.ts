@@ -9,8 +9,9 @@ import { SocialService } from './social.service';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Auth } from './auth.decorator';
+import { OAuth2Client } from 'google-auth-library';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export class AuthResolver {
   constructor(
     private userService: UsersService,
@@ -64,12 +65,33 @@ export class AuthResolver {
     return { ...existedItem, token } as User;
   }
 
-  // @Mutation((returns) => User)
-  // async signInGoogle(@Args('googleInput') body: GoogleInput) {
-  //   return {
-  //     id: 'user_id',
-  //     username: 'user_name',
-  //     email: 'user_email',
-  //   };
-  // }
+  @Mutation(() => User)
+  async signInGoogle(@Args('googleInput') body: GoogleInput) {
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+
+    const ticket = await client.verifyIdToken({
+      idToken: body.accessToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const data = ticket.getPayload();
+
+    const existedItem = await this.userService.findByGoogleId(data.sub);
+
+    if (!existedItem) {
+      const result = await this.userService.create({
+        email: data.email,
+        username: data.name || data.email,
+        googleId: data.sub,
+      });
+
+      const token = await this.authService.generateToken(existedItem);
+
+      return { ...result, token } as User;
+    }
+
+    const token = await this.authService.generateToken(existedItem);
+
+    return { ...existedItem, token } as User;
+  }
 }

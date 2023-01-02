@@ -45,6 +45,18 @@ export class UsersService {
     return await lastValueFrom(result);
   }
 
+  async findByGoogleId(id: string): Promise<User> {
+    const result = this.client.send<User>(
+      {
+        entity: 'users',
+        cmd: 'get-one-by-google',
+      },
+      id,
+    );
+
+    return await lastValueFrom(result);
+  }
+
   async findById(_id: string): Promise<User> {
     const result = this.client.send<User>(
       {

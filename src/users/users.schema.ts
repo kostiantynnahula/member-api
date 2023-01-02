@@ -28,6 +28,12 @@ export class User {
     maxlength: 255,
   })
   facebookId?: string;
+
+  @Prop({
+    required: false,
+    maxlength: 255,
+  })
+  googleId?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
