@@ -9,7 +9,6 @@ import { SocialService } from './social.service';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Auth } from './auth.decorator';
-import { OAuth2Client } from 'google-auth-library';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -67,14 +66,7 @@ export class AuthResolver {
 
   @Mutation(() => User)
   async signInGoogle(@Args('googleInput') body: GoogleInput) {
-    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
-
-    const ticket = await client.verifyIdToken({
-      idToken: body.accessToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
-    const data = ticket.getPayload();
+    const data = await this.socialService.getGoogleDetails(body.accessToken);
 
     const existedItem = await this.userService.findByGoogleId(data.sub);
 
