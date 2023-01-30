@@ -98,11 +98,24 @@ export class FoldersResolver {
     name: 'deleteFolder',
   })
   async deleteOne(@Args('id') _id: string, @Auth() user: User) {
-    return await lastValueFrom(
+    const folder = await lastValueFrom(
+      this.service.getOne({
+        _id,
+        user_id: user._id,
+      }),
+    );
+
+    if (!folder) {
+      return new NotFoundException();
+    }
+
+    await lastValueFrom(
       this.service.deleteOne({
         _id,
         user_id: user._id,
       }),
     );
+
+    return folder;
   }
 }
