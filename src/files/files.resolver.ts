@@ -8,6 +8,8 @@ import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { File } from './models/files.model';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
+import { join } from 'path';
+import { createWriteStream } from 'fs';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -35,6 +37,15 @@ export class FilesResolver {
     @Args('createFileInput') body: CreateFileInput,
     @Auth() auth: User,
   ) {
+    const { file } = body;
+
+    const { createReadStream, filename } = await file;
+
+    createReadStream()
+      .pipe(createWriteStream(join(process.cwd(), `./src/upload/${filename}`)))
+      .on('finish', (data) => console.log(data, 'finish'))
+      .on('error', (err) => console.log(err, 'error'));
+
     return await this.service.createOne({ ...body, user_id: auth._id });
   }
 
