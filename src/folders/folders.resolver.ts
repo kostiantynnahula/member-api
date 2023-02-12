@@ -34,7 +34,7 @@ export class FoldersResolver {
   }
 
   @Query(() => [Folder], {
-    name: 'getFolderList',
+    name: 'folderList',
   })
   async getMany(
     @Args('params') params: GetManyFolderInput,

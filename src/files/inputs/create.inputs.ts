@@ -16,13 +16,17 @@ export class CreateFileInput {
   @IsDefined()
   name: string;
 
-  @Field()
+  @Field({
+    nullable: true,
+  })
   @IsOptional()
   url?: string;
 
-  @Field()
+  @Field({
+    nullable: true,
+  })
   @IsOptional()
-  folder: string;
+  folder?: string;
 
   @Field(() => GraphQLUpload)
   file: Promise<FileUpload>;

@@ -1,13 +1,25 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsDefined } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
-@InputType()
+@InputType('ListFolderQuery')
 export class GetManyFolderInput {
-  @Field()
-  @IsDefined()
+  @Field({
+    nullable: true,
+    defaultValue: 1,
+  })
+  @IsOptional()
   page: number;
 
-  @Field()
-  @IsDefined()
+  @Field({
+    nullable: true,
+    defaultValue: 100,
+  })
+  @IsOptional()
   limit: number;
+
+  @Field({
+    nullable: true,
+  })
+  @IsOptional()
+  parent_id: string;
 }

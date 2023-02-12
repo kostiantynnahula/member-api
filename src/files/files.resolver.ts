@@ -42,7 +42,7 @@ export class FilesResolver {
     const { createReadStream, filename } = await file;
 
     createReadStream()
-      .pipe(createWriteStream(join(process.cwd(), `./src/upload/${filename}`)))
+      .pipe(createWriteStream(join(process.cwd(), `./upload/${filename}`)))
       .on('finish', (data) => console.log(data, 'finish'))
       .on('error', (err) => console.log(err, 'error'));
 
