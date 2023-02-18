@@ -12,8 +12,6 @@ import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { File } from './models/files.model';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
-import { join } from 'path';
-import { createWriteStream } from 'fs';
 import { UploadService } from './upload.service';
 
 @Resolver()

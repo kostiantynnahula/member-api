@@ -3,6 +3,7 @@ import { FilesService } from './files.service';
 import { FilesResolver } from './files.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { UploadService } from './upload.service';
+import { FilesController } from './files.controller';
 
 @Module({
   imports: [
@@ -17,5 +18,6 @@ import { UploadService } from './upload.service';
     ]),
   ],
   providers: [FilesService, FilesResolver, UploadService],
+  controllers: [FilesController],
 })
 export class FilesModule {}

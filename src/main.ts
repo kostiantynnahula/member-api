@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
-import { graphqlUploadExpress } from 'graphql-upload-minimal';
+// import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,12 +21,12 @@ async function bootstrap() {
     }),
   );
 
-  app.use(
-    graphqlUploadExpress({
-      maxFieldSize: 1000000,
-      maxFiles: 10,
-    }),
-  );
+  // app.use(
+  //   graphqlUploadExpress({
+  //     maxFieldSize: 1000000,
+  //     maxFiles: 10,
+  //   }),
+  // );
 
   useContainer(app.select(AppModule), {
     fallbackOnErrors: true,
