@@ -1,15 +1,20 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { NotFoundException, UseGuards } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateFileInput } from './inputs/create.inputs';
 import { UpdateFileInput } from './inputs/update.inputs';
 import { GetManyFileInput } from './inputs/get-many.input';
 import { FilesService } from './files.service';
-import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { File } from './models/files.model';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
 import { join } from 'path';
 import { createWriteStream } from 'fs';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -41,12 +46,24 @@ export class FilesResolver {
 
     const { createReadStream, filename } = await file;
 
-    createReadStream()
-      .pipe(createWriteStream(join(process.cwd(), `./upload/${filename}`)))
-      .on('finish', (data) => console.log(data, 'finish'))
-      .on('error', (err) => console.log(err, 'error'));
+    return new Promise(async (resolve) => {
+      createReadStream()
+        .pipe(createWriteStream(join(process.cwd(), `./uploads/${filename}`)))
+        .on('finish', () => {
+          resolve({
+            _id: '_id',
+            name: filename,
+          });
+        })
+        .on('error', () => {
+          new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
+        });
+    });
 
-    return await this.service.createOne({ ...body, user_id: auth._id });
+    return {
+      _id: '_id',
+      name: 'name',
+    };
   }
 
   @Mutation(() => File)

@@ -13,7 +13,7 @@ export interface FileUpload {
 export class CreateFileInput {
   @Field()
   @IsNotEmpty()
-  @IsDefined()
+  @IsOptional()
   name: string;
 
   @Field({
