@@ -6,6 +6,5 @@ export interface Folder {
 export interface File {
   _id: string;
   name: string;
-  url: string;
-  folder: Folder;
+  folder_id: Folder;
 }

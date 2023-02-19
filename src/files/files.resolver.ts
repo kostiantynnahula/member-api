@@ -42,28 +42,28 @@ export class FilesResolver {
     @Args('createFileInput') body: CreateFileInput,
     @Auth() auth: User,
   ) {
-    const { file } = body;
+    const { file, folder_id } = body;
 
     const { createReadStream, filename } = await file;
 
-    return new Promise(async (resolve) => {
+    const uploading = new Promise(async (resolve) => {
       createReadStream()
         .pipe(createWriteStream(join(process.cwd(), `./uploads/${filename}`)))
-        .on('finish', () => {
-          resolve({
-            _id: '_id',
-            name: filename,
-          });
+        .on('finish', async () => {
+          resolve(file);
         })
         .on('error', () => {
           new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
         });
     });
 
-    return {
-      _id: '_id',
-      name: 'name',
-    };
+    await uploading;
+
+    return await this.service.createOne({
+      folder_id,
+      name: filename,
+      user_id: auth._id,
+    });
   }
 
   @Mutation(() => File)

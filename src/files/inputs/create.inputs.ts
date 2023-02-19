@@ -20,14 +20,10 @@ export class CreateFileInput {
     nullable: true,
   })
   @IsOptional()
-  url?: string;
+  folder_id?: string;
 
-  @Field({
+  @Field(() => GraphQLUpload, {
     nullable: true,
   })
-  @IsOptional()
-  folder?: string;
-
-  @Field(() => GraphQLUpload)
   file: Promise<FileUpload>;
 }

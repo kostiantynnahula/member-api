@@ -38,7 +38,9 @@ export class FilesService {
     return await lastValueFrom(item);
   }
 
-  async createOne(data: CreateFileInput & { user_id: string }): Promise<File> {
+  async createOne(
+    data: Pick<CreateFileInput, 'name' | 'folder_id'> & { user_id: string },
+  ): Promise<File> {
     const result = this.client.send<File>(
       {
         entity: 'files',
