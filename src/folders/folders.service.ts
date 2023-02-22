@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Folder } from './../utils/models/files';
 import { CreateFolderInput } from './inputs/create.input';
 import { UpdateFolderInput } from './inputs/update.input';
-import { GetManyFolderInput } from './inputs/get-many.input';
+import { GetManyFolderInput } from './inputs/folders.input';
 
 @Injectable()
 export class FoldersService {

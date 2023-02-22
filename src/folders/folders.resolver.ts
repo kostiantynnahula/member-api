@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { CreateFolderInput } from './inputs/create.input';
 import { UpdateFolderInput } from './inputs/update.input';
-import { GetManyFolderInput } from './inputs/get-many.input';
+import { GetManyFolderInput } from './inputs/folders.input';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { FoldersService } from './folders.service';
 import { Folder } from './models/folder.model';
@@ -10,7 +10,7 @@ import { lastValueFrom } from 'rxjs';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
 
-@Resolver()
+@Resolver(() => Folder)
 @UseGuards(JwtAuthGuard)
 export class FoldersResolver {
   constructor(private readonly service: FoldersService) {}
@@ -36,10 +36,7 @@ export class FoldersResolver {
   @Query(() => [Folder], {
     name: 'folders',
   })
-  async folders(
-    @Args('params') params: GetManyFolderInput,
-    @Auth() user: User,
-  ) {
+  async folders(@Args() params: GetManyFolderInput, @Auth() user: User) {
     const folders = await lastValueFrom(
       this.service.getMany({
         ...params,
