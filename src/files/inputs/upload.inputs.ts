@@ -1,19 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsDefined, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import { Stream } from 'stream';
+import { FileUpload } from './../../utils/inputs/file';
 
-export interface FileUpload {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-  createReadStream: () => Stream;
-}
-@InputType()
-export class CreateFileInput {
+@InputType('UploadFileInput')
+export class UploadFileInput {
   @Field()
   @IsNotEmpty()
-  @IsOptional()
   name: string;
 
   @Field({

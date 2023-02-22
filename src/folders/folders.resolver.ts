@@ -16,9 +16,9 @@ export class FoldersResolver {
   constructor(private readonly service: FoldersService) {}
 
   @Query(() => Folder, {
-    name: 'getFolder',
+    name: 'folder',
   })
-  async getOne(@Args('id') _id: string, @Auth() user: User) {
+  async folder(@Args('id') _id: string, @Auth() user: User) {
     const folder = await lastValueFrom(
       this.service.getOne({
         _id,
@@ -34,9 +34,9 @@ export class FoldersResolver {
   }
 
   @Query(() => [Folder], {
-    name: 'folderList',
+    name: 'folders',
   })
-  async getMany(
+  async folders(
     @Args('params') params: GetManyFolderInput,
     @Auth() user: User,
   ) {
@@ -52,7 +52,7 @@ export class FoldersResolver {
   @Mutation(() => Folder, {
     name: 'createFolder',
   })
-  async createOne(
+  async create(
     @Args('createFolderInput') body: CreateFolderInput,
     @Auth() user: User,
   ) {
@@ -68,7 +68,7 @@ export class FoldersResolver {
   @Mutation(() => Folder, {
     name: 'updateFolder',
   })
-  async updateOne(
+  async update(
     @Args('updateFolderInput') body: UpdateFolderInput,
     @Auth() user: User,
   ) {
@@ -97,7 +97,7 @@ export class FoldersResolver {
   @Mutation(() => Folder, {
     name: 'deleteFolder',
   })
-  async deleteOne(@Args('id') _id: string, @Auth() user: User) {
+  async delete(@Args('id') _id: string, @Auth() user: User) {
     const folder = await lastValueFrom(
       this.service.getOne({
         _id,

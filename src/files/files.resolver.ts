@@ -1,13 +1,13 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, ResolveField } from '@nestjs/graphql';
 import {
   HttpException,
   HttpStatus,
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
-import { CreateFileInput } from './inputs/create.inputs';
+import { UploadFileInput } from './inputs/upload.inputs';
 import { UpdateFileInput } from './inputs/update.inputs';
-import { GetManyFileInput } from './inputs/get-many.input';
+import { FilesArgs } from './inputs/files.arg';
 import { FilesService } from './files.service';
 import { File } from './models/files.model';
 import { Auth } from './../auth/auth.decorator';
@@ -16,13 +16,15 @@ import { join } from 'path';
 import { createWriteStream } from 'fs';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
-@Resolver()
+@Resolver(() => File)
 @UseGuards(JwtAuthGuard)
 export class FilesResolver {
   constructor(private readonly service: FilesService) {}
 
-  @Query(() => File)
-  async getOne(@Args('id') _id: string, @Auth() auth: User) {
+  @Query(() => File, {
+    name: 'file',
+  })
+  async file(@Args('id') _id: string, @Auth() auth: User) {
     const file = await this.service.getOne({ _id, user_id: auth._id });
 
     if (!file) {
@@ -32,14 +34,19 @@ export class FilesResolver {
     return file;
   }
 
-  @Query(() => [File])
-  async getMany(@Args('params') params: GetManyFileInput, @Auth() auth: User) {
+  @Query(() => [File], {
+    name: 'files',
+  })
+  @ResolveField('files', () => [File], { nullable: true })
+  async files(@Args() params: FilesArgs, @Auth() auth: User) {
     return await this.service.getMany({ ...params, user_id: auth._id });
   }
 
-  @Mutation(() => File)
-  async createOne(
-    @Args('createFileInput') body: CreateFileInput,
+  @Mutation(() => File, {
+    name: 'uploadFile',
+  })
+  async upload(
+    @Args('uploadFileInput') body: UploadFileInput,
     @Auth() auth: User,
   ) {
     const { file, folder_id } = body;
@@ -66,8 +73,10 @@ export class FilesResolver {
     });
   }
 
-  @Mutation(() => File)
-  async updateOne(
+  @Mutation(() => File, {
+    name: 'updateFile',
+  })
+  async update(
     @Args('updateFileInput') body: UpdateFileInput,
     @Auth() auth: User,
   ) {
@@ -82,8 +91,10 @@ export class FilesResolver {
     return await this.service.updateOne({ ...body, user_id: auth._id });
   }
 
-  @Mutation(() => File)
-  async deleteOne(@Args('id') _id: string, @Auth() auth: User) {
+  @Mutation(() => File, {
+    name: 'deleteFile',
+  })
+  async delete(@Args('id') _id: string, @Auth() auth: User) {
     return await this.service.deleteOne({ _id, user_id: auth._id });
   }
 }

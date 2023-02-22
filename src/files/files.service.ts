@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { File } from './../utils/models/files';
-import { CreateFileInput } from './inputs/create.inputs';
+import { UploadFileInput } from './inputs/upload.inputs';
 import { UpdateFileInput } from './inputs/update.inputs';
-import { GetManyFileInput } from './inputs/get-many.input';
+import { FilesArgs } from './inputs/files.arg';
 import { lastValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -12,9 +12,7 @@ export class FilesService {
     @Inject('FILE_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 
-  async getMany(
-    params: GetManyFileInput & { user_id: string },
-  ): Promise<File[]> {
+  async getMany(params: FilesArgs & { user_id: string }): Promise<File[]> {
     const list = this.client.send<File[]>(
       {
         entity: 'files',
@@ -39,7 +37,7 @@ export class FilesService {
   }
 
   async createOne(
-    data: Pick<CreateFileInput, 'name' | 'folder_id'> & { user_id: string },
+    data: Pick<UploadFileInput, 'name' | 'folder_id'> & { user_id: string },
   ): Promise<File> {
     const result = this.client.send<File>(
       {

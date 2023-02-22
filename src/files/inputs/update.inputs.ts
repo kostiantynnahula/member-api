@@ -14,9 +14,5 @@ export class UpdateFileInput {
 
   @Field()
   @IsOptional()
-  url?: string;
-
-  @Field()
-  @IsOptional()
   folder?: string;
 }
