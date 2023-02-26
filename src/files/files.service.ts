@@ -71,6 +71,6 @@ export class FilesService {
       params,
     );
 
-    await lastValueFrom(result);
+    return await lastValueFrom(result);
   }
 }

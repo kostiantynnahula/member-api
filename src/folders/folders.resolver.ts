@@ -34,6 +34,19 @@ export class FoldersResolver {
   }
 
   @Query(() => [Folder], {
+    name: 'breadcrumb',
+  })
+  async breadcrumb(@Args('id') _id: string, @Auth() user: User) {
+    const breadcrumb = await lastValueFrom(
+      this.service.getBreadcrumb({
+        _id,
+        user_id: user._id,
+      }),
+    );
+    return breadcrumb;
+  }
+
+  @Query(() => [Folder], {
     name: 'folders',
   })
   async folders(@Args() params: GetManyFolderInput, @Auth() user: User) {

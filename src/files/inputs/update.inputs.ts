@@ -7,12 +7,16 @@ export class UpdateFileInput {
   @IsDefined()
   _id: string;
 
-  @Field()
+  @Field({
+    nullable: true,
+  })
   @IsOptional()
   @IsNotEmpty()
   name: string;
 
-  @Field()
+  @Field({
+    nullable: true,
+  })
   @IsOptional()
   folder?: string;
 }

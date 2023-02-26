@@ -5,6 +5,7 @@ import { Folder } from './../utils/models/files';
 import { CreateFolderInput } from './inputs/create.input';
 import { UpdateFolderInput } from './inputs/update.input';
 import { GetManyFolderInput } from './inputs/folders.input';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class FoldersService {
@@ -59,6 +60,19 @@ export class FoldersService {
       {
         entity: 'folder',
         cmd: 'delete-one',
+      },
+      params,
+    );
+  }
+
+  getBreadcrumb(params: {
+    _id: string;
+    user_id: string;
+  }): Observable<Folder[]> {
+    return this.client.send(
+      {
+        entity: 'folder',
+        cmd: 'get-breadcrumb',
       },
       params,
     );
