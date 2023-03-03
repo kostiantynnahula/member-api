@@ -8,5 +8,5 @@ export class GetManyFolderInput extends PaginationArg {
     nullable: true,
   })
   @IsOptional()
-  parent_id: string;
+  folder_id: string;
 }
