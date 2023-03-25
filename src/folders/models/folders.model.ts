@@ -1,14 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Folder } from './folder.model';
 import { Parent } from './parent.model';
 
 @ObjectType()
-export class Folder {
-  @Field({ nullable: false })
-  _id: string;
-
-  @Field()
-  name: string;
-
+export class Folders {
+  @Field(() => [Folder])
+  list: Folder[];
   @Field(() => [Parent])
   parents: Parent[];
 }

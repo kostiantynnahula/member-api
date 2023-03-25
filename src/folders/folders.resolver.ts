@@ -9,6 +9,7 @@ import { Folder } from './models/folder.model';
 import { lastValueFrom } from 'rxjs';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
+import { Folders } from './models/folders.model';
 
 @Resolver(() => Folder)
 @UseGuards(JwtAuthGuard)
@@ -33,20 +34,7 @@ export class FoldersResolver {
     return folder;
   }
 
-  @Query(() => [Folder], {
-    name: 'breadcrumb',
-  })
-  async breadcrumb(@Args('id') _id: string, @Auth() user: User) {
-    const breadcrumb = await lastValueFrom(
-      this.service.getBreadcrumb({
-        _id,
-        user_id: user._id,
-      }),
-    );
-    return breadcrumb;
-  }
-
-  @Query(() => [Folder], {
+  @Query(() => Folders, {
     name: 'folders',
   })
   async folders(@Args() params: GetManyFolderInput, @Auth() user: User) {

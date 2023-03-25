@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsDefined } from 'class-validator';
+import { IsDefined, IsOptional, IsString } from 'class-validator';
+import { ParentFolder } from './parent-folder.input';
 
 @InputType()
 export class UpdateFolderInput {
@@ -7,8 +8,12 @@ export class UpdateFolderInput {
   @IsDefined()
   _id: string;
 
-  @Field()
-  @IsNotEmpty()
-  @IsDefined()
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
   name: string;
+
+  @Field(() => [ParentFolder], { nullable: true })
+  @IsOptional()
+  parents: ParentFolder[];
 }

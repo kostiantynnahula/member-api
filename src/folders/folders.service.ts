@@ -5,7 +5,6 @@ import { Folder } from './../utils/models/files';
 import { CreateFolderInput } from './inputs/create.input';
 import { UpdateFolderInput } from './inputs/update.input';
 import { GetManyFolderInput } from './inputs/folders.input';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class FoldersService {
