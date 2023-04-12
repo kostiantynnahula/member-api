@@ -15,11 +15,15 @@ import { User } from './../users/models/user.model';
 import { join } from 'path';
 import { createWriteStream } from 'fs';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { AWSUploader } from './../utils/services/AWSUploader.service';
 
 @Resolver(() => File)
 @UseGuards(JwtAuthGuard)
 export class FilesResolver {
-  constructor(private readonly service: FilesService) {}
+  constructor(
+    private readonly service: FilesService,
+    private readonly uploadService: AWSUploader,
+  ) {}
 
   @Query(() => File, {
     name: 'file',
@@ -51,20 +55,15 @@ export class FilesResolver {
   ) {
     const { file, folder_id } = body;
 
+    console.log(file);
+
     const { createReadStream, filename } = await file;
 
-    const uploading = new Promise(async (resolve) => {
-      createReadStream()
-        .pipe(createWriteStream(join(process.cwd(), `./uploads/${filename}`)))
-        .on('finish', async () => {
-          resolve(file);
-        })
-        .on('error', () => {
-          new HttpException('Could not save image', HttpStatus.BAD_REQUEST);
-        });
-    });
+    const { writeStream, promise } = this.uploadService.createUploadStream(filename);
 
-    await uploading;
+    createReadStream().pipe(writeStream);
+
+    const promiseResult = await promise;
 
     return await this.service.createOne({
       folder_id,
