@@ -20,4 +20,7 @@ export class File {
 
   @Field()
   key: string;
+
+  @Field()
+  mimetype: string;
 }

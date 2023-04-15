@@ -48,7 +48,7 @@ export class FilesResolver {
   ) {
     const { file, folder_id } = body;
 
-    const { createReadStream, filename } = await file;
+    const { createReadStream, filename, mimetype } = await file;
 
     const { writeStream, promise } =
       this.uploadService.createUploadStream(filename);
@@ -63,6 +63,7 @@ export class FilesResolver {
       location,
       key,
       user_id: auth._id,
+      mimetype,
     });
   }
 

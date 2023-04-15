@@ -41,6 +41,7 @@ export class FilesService {
       user_id: string;
       location: string;
       key: string;
+      mimetype: string;
     },
   ): Promise<File> {
     const result = this.client.send<File>(
