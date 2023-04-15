@@ -1,10 +1,5 @@
 import { Args, Mutation, Query, Resolver, ResolveField } from '@nestjs/graphql';
-import {
-  HttpException,
-  HttpStatus,
-  NotFoundException,
-  UseGuards,
-} from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { UploadFileInput } from './inputs/upload.inputs';
 import { UpdateFileInput } from './inputs/update.inputs';
 import { FilesArgs } from './inputs/files.arg';
@@ -12,17 +7,15 @@ import { FilesService } from './files.service';
 import { File } from './models/files.model';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
-import { join } from 'path';
-import { createWriteStream } from 'fs';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
-import { AWSUploader } from './../utils/services/AWSUploader.service';
+import { UploaderService } from '../utils/services/Uploader.service';
 
 @Resolver(() => File)
 @UseGuards(JwtAuthGuard)
 export class FilesResolver {
   constructor(
     private readonly service: FilesService,
-    private readonly uploadService: AWSUploader,
+    private readonly uploadService: UploaderService,
   ) {}
 
   @Query(() => File, {
@@ -55,19 +48,20 @@ export class FilesResolver {
   ) {
     const { file, folder_id } = body;
 
-    console.log(file);
-
     const { createReadStream, filename } = await file;
 
-    const { writeStream, promise } = this.uploadService.createUploadStream(filename);
+    const { writeStream, promise } =
+      this.uploadService.createUploadStream(filename);
 
     createReadStream().pipe(writeStream);
 
-    const promiseResult = await promise;
+    const { Location: location, Key: key } = await promise;
 
     return await this.service.createOne({
       folder_id,
-      name: filename,
+      name: key,
+      location,
+      key,
       user_id: auth._id,
     });
   }

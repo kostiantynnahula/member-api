@@ -14,4 +14,10 @@ export class File {
 
   @Field()
   folder: Folder;
+
+  @Field()
+  location: string;
+
+  @Field()
+  key: string;
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FilesResolver } from './files.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AWSUploader } from '../utils/services/AWSUploader.service';
+import { UploaderService } from '../utils/services/Uploader.service';
 
 @Module({
   imports: [
@@ -16,6 +16,6 @@ import { AWSUploader } from '../utils/services/AWSUploader.service';
       },
     ]),
   ],
-  providers: [FilesService, FilesResolver, AWSUploader],
+  providers: [FilesService, FilesResolver, UploaderService],
 })
 export class FilesModule {}

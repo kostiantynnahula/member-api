@@ -1,12 +1,8 @@
 import * as AWS from 'aws-sdk';
 import * as stream from 'stream';
+import { S3UploadStream } from '../models/uploader';
 
-type S3UploadStream = {
-  writeStream: stream.PassThrough;
-  promise: Promise<AWS.S3.ManagedUpload.SendData>;
-};
-
-export class AWSUploader {
+export class UploaderService {
   private s3: AWS.S3;
 
   constructor() {
@@ -24,7 +20,7 @@ export class AWSUploader {
       writeStream: pass,
       promise: this.s3
         .upload({
-          Bucket: 'members-files-test',
+          Bucket: process.env.AWS_S3_BUCKET,
           Key: key,
           Body: pass,
           ACL: 'public-read',

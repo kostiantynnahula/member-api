@@ -37,7 +37,11 @@ export class FilesService {
   }
 
   async createOne(
-    data: Pick<UploadFileInput, 'name' | 'folder_id'> & { user_id: string },
+    data: Pick<UploadFileInput, 'name' | 'folder_id'> & {
+      user_id: string;
+      location: string;
+      key: string;
+    },
   ): Promise<File> {
     const result = this.client.send<File>(
       {
