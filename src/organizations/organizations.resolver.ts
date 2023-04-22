@@ -30,6 +30,17 @@ export class OrganizationsResolver {
     return organization;
   }
 
+  @Query(() => [Organization], {
+    name: 'organizations',
+  })
+  async organizations(@Auth() auth: User) {
+    const organizations = await lastValueFrom(
+      this.service.getOrganizationsByMember(auth._id),
+    );
+
+    return organizations;
+  }
+
   @Mutation(() => Organization, {
     name: 'registerOrganization',
   })
@@ -37,16 +48,13 @@ export class OrganizationsResolver {
     @Args('organizationInput') body: OrganizationInput,
     @Auth() auth: User,
   ) {
-    const existedOrganization = await lastValueFrom(
-      this.service.getOrganizationByCreator(auth._id),
-    );
-
-    if (existedOrganization) {
-      return new BadRequestException('You already have an organization');
-    }
+    const { _id, username, email } = auth;
 
     const organization = await lastValueFrom(
-      this.service.createOrganization({ ...body, creator_id: auth._id }),
+      this.service.createOrganization({
+        ...body,
+        creator: { _id, username, email },
+      }),
     );
 
     return organization;
