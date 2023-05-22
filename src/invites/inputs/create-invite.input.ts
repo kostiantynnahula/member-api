@@ -9,4 +9,9 @@ export class CreateInviteInput {
   @IsDefined()
   @MaxLength(255)
   email: string;
+
+  @Field()
+  @IsDefined()
+  @IsNotEmpty()
+  orgId: string;
 }

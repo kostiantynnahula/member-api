@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Member } from './member.model';
 
 @ObjectType()
 export class Organization {
@@ -10,4 +11,7 @@ export class Organization {
 
   @Field()
   description: string;
+
+  @Field(() => [Member])
+  members: Member[];
 }

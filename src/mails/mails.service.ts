@@ -13,7 +13,7 @@ export class MailsService {
     const res = this.client.send(
       {
         entity: 'mails',
-        cmd: 'send-mail',
+        cmd: 'org-invite',
       },
       payload,
     );

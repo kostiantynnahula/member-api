@@ -9,13 +9,13 @@ export class OrganizationsService {
     @Inject('ORGANIZARTION_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 
-  getOrganization(_id) {
+  getOrganization(_id: string, member_id: string) {
     return this.client.send<Organization>(
       {
         entity: 'organization',
         cmd: 'get-one',
       },
-      _id,
+      { _id, member_id },
     );
   }
 
@@ -26,16 +26,6 @@ export class OrganizationsService {
         cmd: 'get-list',
       },
       member_id,
-    );
-  }
-
-  getOrganizationByCreator(creator_id: string) {
-    return this.client.send<Organization>(
-      {
-        entity: 'organization',
-        cmd: 'get-by-creator',
-      },
-      creator_id,
     );
   }
 
@@ -53,7 +43,9 @@ export class OrganizationsService {
     );
   }
 
-  updateOrganization(data: OrganizationInput & { _id: string }) {
+  updateOrganization(
+    data: OrganizationInput & { _id: string; member_id: string },
+  ) {
     return this.client.send<Organization>(
       {
         entity: 'organization',

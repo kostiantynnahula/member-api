@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  NotFoundException,
-  UseGuards,
-} from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Organization } from './models/organization.model';
 import { OrganizationInput } from './inputs/organization.input';
@@ -18,12 +14,12 @@ export class OrganizationsResolver {
   constructor(private readonly service: OrganizationsService) {}
 
   @Query(() => Organization)
-  async organization(@Auth() auth: User) {
+  async organization(@Args('id') _id: string, @Auth() auth: User) {
     const organization = await lastValueFrom(
-      this.service.getOrganizationByCreator(auth._id),
+      this.service.getOrganization(_id, auth._id),
     );
 
-    if (organization) {
+    if (!organization) {
       return new NotFoundException();
     }
 
@@ -64,11 +60,14 @@ export class OrganizationsResolver {
     name: 'updateOrganization',
   })
   async update(
+    @Args('id') _id: string,
     @Args('updateOrganizationInput') body: OrganizationInput,
     @Auth() auth: User,
   ) {
+    console.log(_id, 'id');
+    console.log(body, 'body');
     const organization = await lastValueFrom(
-      this.service.getOrganizationByCreator(auth._id),
+      this.service.getOrganization(_id, auth._id),
     );
 
     if (!organization) {
@@ -76,8 +75,9 @@ export class OrganizationsResolver {
     }
 
     return this.service.updateOrganization({
-      _id: organization._id,
       ...body,
+      _id,
+      member_id: auth._id,
     });
   }
 }

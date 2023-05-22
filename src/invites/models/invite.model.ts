@@ -1,11 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User } from './../../users/models/user.model';
-import { InviteType, InviteStatus } from './../../utils/models/invites';
+import { InviteStatus } from './../../utils/models/invites';
 
 @ObjectType()
 export class Invite {
   @Field({ nullable: false })
   _id: string;
+
+  @Field()
+  status: InviteStatus;
 
   @Field()
   from: string;
@@ -14,8 +16,8 @@ export class Invite {
   to: string;
 
   @Field()
-  type: InviteType;
+  secret: string;
 
   @Field()
-  status: InviteStatus;
+  organization: string;
 }

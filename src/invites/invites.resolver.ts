@@ -1,10 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import {
-  NotFoundException,
-  UseGuards,
-  // BadRequestException,
-  // NotFoundException,
-} from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { InvitesService } from './invites.service';
 import { Invite } from './models/invite.model';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
@@ -14,8 +9,6 @@ import { UpdateInviteInput } from './inputs/update-invite.input';
 import { User } from './../users/models/user.model';
 import { OrganizationsService } from './../organizations/organizations.service';
 import { lastValueFrom } from 'rxjs';
-import { InviteType } from './../utils/models/invites';
-import { CreateInvitePayload } from './../utils/inputs/invites';
 import { MailsService } from './../mails/mails.service';
 
 @Resolver()
@@ -33,8 +26,8 @@ export class InvitesResolver {
   }
 
   @Query(() => [Invite])
-  async getInvites(@Auth() auth: User) {
-    return await this.service.getInvites(auth.email);
+  async orgInvites(@Args('_id') _id: string) {
+    return await this.service.getInvites(_id);
   }
 
   @Mutation(() => Invite)
@@ -42,25 +35,17 @@ export class InvitesResolver {
     @Args('createInviteInput') body: CreateInviteInput,
     @Auth() auth: User,
   ) {
-    const organization = await lastValueFrom(
-      this.organizationsService.getOrganizationByCreator(auth._id),
+    const { orgId, email } = body;
+
+    const invite = await lastValueFrom(
+      this.service.createInvite({
+        orgId,
+        to: email,
+        from: auth.email,
+      }),
     );
 
-    const payload: CreateInvitePayload = {
-      from: auth.email,
-      to: body.email,
-      organization: organization._id,
-      type: InviteType.ORGANIZATION,
-    };
-
-    const invite = await this.service.createInvite(payload);
-
-    await this.mailService.sendInvite({
-      from: auth.email,
-      to: body.email,
-      subject: 'Invite email',
-      body: 'Invite email body',
-    });
+    await this.mailService.sendInvite(invite);
 
     return invite;
   }

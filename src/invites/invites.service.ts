@@ -24,7 +24,7 @@ export class InvitesService {
     return this.client.send(
       {
         entity: 'invite',
-        cmd: 'get-related-invites',
+        cmd: 'get-org-invites',
       },
       email,
     );
