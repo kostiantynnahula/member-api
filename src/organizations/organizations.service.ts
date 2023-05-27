@@ -3,6 +3,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { OrganizationInput } from './inputs/organization.input';
 import { Organization } from './models/organization.model';
 import { User } from './../users/models/user.model';
+import { MemberEditInput } from './inputs/member-edit.input';
+import { MemberDeleteInput } from './inputs/member-delete.input';
 @Injectable()
 export class OrganizationsService {
   constructor(
@@ -50,6 +52,26 @@ export class OrganizationsService {
       {
         entity: 'organization',
         cmd: 'update',
+      },
+      data,
+    );
+  }
+
+  editMember(data: MemberEditInput) {
+    return this.client.send(
+      {
+        entity: 'organization-member',
+        cmd: 'update',
+      },
+      data,
+    );
+  }
+
+  deleteMember(data: MemberDeleteInput) {
+    return this.client.send(
+      {
+        entity: 'organization-member',
+        cmd: 'delete',
       },
       data,
     );

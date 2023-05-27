@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
 import { lastValueFrom } from 'rxjs';
+import { MemberEditInput } from './inputs/member-edit.input';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Organization)
@@ -64,8 +65,6 @@ export class OrganizationsResolver {
     @Args('updateOrganizationInput') body: OrganizationInput,
     @Auth() auth: User,
   ) {
-    console.log(_id, 'id');
-    console.log(body, 'body');
     const organization = await lastValueFrom(
       this.service.getOrganization(_id, auth._id),
     );
@@ -79,5 +78,21 @@ export class OrganizationsResolver {
       _id,
       member_id: auth._id,
     });
+  }
+
+  @Mutation(() => Organization)
+  async editMember(@Args('editMemberInput') body: MemberEditInput) {
+    await lastValueFrom(await this.service.editMember(body));
+    return {
+      _id: 'orgId',
+    };
+  }
+
+  @Mutation(() => Organization)
+  async deleteMember(@Args('deleteMemberInput') body: MemberEditInput) {
+    await lastValueFrom(await this.service.deleteMember(body));
+    return {
+      _id: 'orgId',
+    };
   }
 }

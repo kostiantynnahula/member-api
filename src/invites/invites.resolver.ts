@@ -7,7 +7,6 @@ import { Auth } from 'src/auth/auth.decorator';
 import { CreateInviteInput } from './inputs/create-invite.input';
 import { UpdateInviteInput } from './inputs/update-invite.input';
 import { User } from './../users/models/user.model';
-import { OrganizationsService } from './../organizations/organizations.service';
 import { lastValueFrom } from 'rxjs';
 import { MailsService } from './../mails/mails.service';
 
@@ -16,7 +15,6 @@ import { MailsService } from './../mails/mails.service';
 export class InvitesResolver {
   constructor(
     private readonly service: InvitesService,
-    private readonly organizationsService: OrganizationsService,
     private readonly mailService: MailsService,
   ) {}
 
