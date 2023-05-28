@@ -8,6 +8,7 @@ import { Auth } from './../auth/auth.decorator';
 import { User } from './../users/models/user.model';
 import { lastValueFrom } from 'rxjs';
 import { MemberEditInput } from './inputs/member-edit.input';
+import { MemberDeleteInput } from './inputs/member-delete.input';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Organization)
@@ -89,7 +90,7 @@ export class OrganizationsResolver {
   }
 
   @Mutation(() => Organization)
-  async deleteMember(@Args('deleteMemberInput') body: MemberEditInput) {
+  async deleteMember(@Args('deleteMemberInput') body: MemberDeleteInput) {
     await lastValueFrom(await this.service.deleteMember(body));
     return {
       _id: 'orgId',

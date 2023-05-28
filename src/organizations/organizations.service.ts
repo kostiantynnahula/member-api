@@ -5,6 +5,7 @@ import { Organization } from './models/organization.model';
 import { User } from './../users/models/user.model';
 import { MemberEditInput } from './inputs/member-edit.input';
 import { MemberDeleteInput } from './inputs/member-delete.input';
+import { MemberAddInput } from './inputs/member-add.input';
 @Injectable()
 export class OrganizationsService {
   constructor(
@@ -72,6 +73,16 @@ export class OrganizationsService {
       {
         entity: 'organization-member',
         cmd: 'delete',
+      },
+      data,
+    );
+  }
+
+  addMember(data: MemberAddInput) {
+    return this.client.send(
+      {
+        entity: 'organization-member',
+        cmd: 'add',
       },
       data,
     );

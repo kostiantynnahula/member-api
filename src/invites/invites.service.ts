@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { UpdateInviteInput } from './inputs/update-invite.input';
 import { CreateInvitePayload } from './../utils/inputs/invites';
 import { GetInviteByEmail } from './inputs/get-invite-by-email.input';
+import { ApproveInviteInput as GetInviteByParams } from './inputs/approve-invite.input';
 
 @Injectable()
 export class InvitesService {
@@ -55,6 +56,16 @@ export class InvitesService {
       {
         entity: 'invite',
         cmd: 'get-by-email',
+      },
+      data,
+    );
+  }
+
+  getInviteByParams(data: GetInviteByParams & { email: string }) {
+    return this.client.send(
+      {
+        entity: 'invite',
+        cmd: 'get-by-params',
       },
       data,
     );

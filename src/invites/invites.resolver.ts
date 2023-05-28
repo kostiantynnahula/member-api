@@ -9,6 +9,9 @@ import { UpdateInviteInput } from './inputs/update-invite.input';
 import { User } from './../users/models/user.model';
 import { lastValueFrom } from 'rxjs';
 import { MailsService } from './../mails/mails.service';
+import { ApproveInviteInput } from './inputs/approve-invite.input';
+import { InviteStatus } from 'src/utils/models/invites';
+import { OrganizationsService } from './../organizations/organizations.service';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -16,6 +19,7 @@ export class InvitesResolver {
   constructor(
     private readonly service: InvitesService,
     private readonly mailService: MailsService,
+    private readonly organizationService: OrganizationsService,
   ) {}
 
   @Query(() => Invite)
@@ -62,5 +66,29 @@ export class InvitesResolver {
     }
 
     return await this.service.updateInvite(body);
+  }
+
+  @Query(() => [Invite])
+  async getInviteByParams(
+    @Args('approveInvite') body: ApproveInviteInput,
+    @Auth() auth: User,
+  ) {
+    const invite = await lastValueFrom(
+      this.service.getInviteByParams({ ...body, email: auth.email }),
+    );
+
+    if (!invite) {
+      return new NotFoundException('Invite was not found');
+    }
+
+    await this.service.updateInvite({
+      _id: invite._id,
+      status: InviteStatus.ACCEPTED,
+    });
+
+    return await this.organizationService.addMember({
+      organizationId: invite.organization,
+      memberId: auth._id,
+    });
   }
 }
