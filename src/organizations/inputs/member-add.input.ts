@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsDefined } from 'class-validator';
+import { Member } from '../models/member.model';
 
 @InputType()
 export class MemberAddInput {
@@ -9,5 +10,5 @@ export class MemberAddInput {
 
   @Field()
   @IsDefined()
-  memberId: string;
+  member: Omit<Member, 'role'>;
 }

@@ -68,8 +68,8 @@ export class InvitesResolver {
     return await this.service.updateInvite(body);
   }
 
-  @Query(() => [Invite])
-  async getInviteByParams(
+  @Mutation(() => [Invite])
+  async approveInvite(
     @Args('approveInvite') body: ApproveInviteInput,
     @Auth() auth: User,
   ) {
@@ -81,14 +81,22 @@ export class InvitesResolver {
       return new NotFoundException('Invite was not found');
     }
 
-    await this.service.updateInvite({
-      _id: invite._id,
-      status: InviteStatus.ACCEPTED,
-    });
+    await lastValueFrom(
+      this.service.updateInvite({
+        _id: invite._id,
+        status: InviteStatus.ACCEPTED,
+      }),
+    );
+
+    const { _id, email, username } = auth;
 
     return await this.organizationService.addMember({
       organizationId: invite.organization,
-      memberId: auth._id,
+      member: {
+        _id,
+        email,
+        username,
+      },
     });
   }
 }
